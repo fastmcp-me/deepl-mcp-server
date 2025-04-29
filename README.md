@@ -96,7 +96,6 @@ This tool rephrases text in the same or different language using the DeepL API.
 
 Parameters:
 - `text`: The text to rephrase
-- `targetLang`: Target language code (e.g., 'en', 'de') or null for auto-detection
 
 ## Supported Languages
 

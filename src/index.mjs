@@ -4,11 +4,25 @@ import { z } from "zod";
 import * as deepl from 'deepl-node';
 
 const DEEPL_API_KEY = process.env.DEEPL_API_KEY;
-const translator = new deepl.Translator(DEEPL_API_KEY);
+const deeplClient = new deepl.DeepLClient(DEEPL_API_KEY);
 
 // Cache for language lists
 let sourceLanguagesCache = null;
 let targetLanguagesCache = null;
+
+async function getSourceLanguages() {
+  if (!sourceLanguagesCache) {
+    sourceLanguagesCache = await deeplClient.getSourceLanguages();
+  }
+  return sourceLanguagesCache;
+}
+
+async function getTargetLanguages() {
+  if (!targetLanguagesCache) {
+    targetLanguagesCache = await deeplClient.getTargetLanguages();
+  }
+  return targetLanguagesCache;
+}
 
 // Helper function to validate languages
 async function validateLanguages(sourceLang, targetLang) {
@@ -23,20 +37,6 @@ async function validateLanguages(sourceLang, targetLang) {
   }
 }
 
-// Helper functions to get languages
-async function getSourceLanguages() {
-  if (!sourceLanguagesCache) {
-    sourceLanguagesCache = await translator.getSourceLanguages();
-  }
-  return sourceLanguagesCache;
-}
-
-async function getTargetLanguages() {
-  if (!targetLanguagesCache) {
-    targetLanguagesCache = await translator.getTargetLanguages();
-  }
-  return targetLanguagesCache;
-}
 
 // Create server instance
 const server = new McpServer({
@@ -107,11 +107,11 @@ server.tool(
     formality: z.enum(['less', 'more', 'default', 'prefer_less', 'prefer_more']).optional().describe("Controls whether translations should lean toward informal or formal language"),
   },
   async ({ text, sourceLang, targetLang, formality }) => {
-    try {
-      // Validate languages before translation
-      await validateLanguages(sourceLang, targetLang);
+    // Validate languages before translation
+    await validateLanguages(sourceLang, targetLang);
 
-      const result = await translator.translateText(
+    try {
+      const result = await deeplClient.translateText(
         text, 
         /** @type {import('deepl-node').SourceLanguageCode} */ (sourceLang), 
         /** @type {import('deepl-node').TargetLanguageCode} */ (targetLang), 
@@ -139,27 +139,15 @@ server.tool(
   "rephrase-text",
   "Rephrase text in the same or different language using DeepL API",
   {
-    text: z.string().describe("Text to rephrase"),
-    targetLang: z.string().nullable().describe("Target language code (e.g. 'en', 'de', null for auto-detection)"),
+    text: z.string().describe("Text to rephrase")
   },
-  async ({ text, targetLang }) => {
+  async ({ text }) => {
     try {
-      // First detect the language if not provided
-      const detectedResult = await translator.translateText(text, null, /** @type {import('deepl-node').TargetLanguageCode} */ ('en'));
-      const lang = /** @type {import('deepl-node').TargetLanguageCode} */ (targetLang || detectedResult.detectedSourceLang);
-      
-      // Validate the target language
-      if (targetLang) {
-        await validateLanguages(null, targetLang);
-      }
-
-      const result = await translator.translateText(
+      const result = await deeplClient.rephraseText(
         text,
-        /** @type {import('deepl-node').SourceLanguageCode} */ (lang),
-        lang,
-        { formality: 'more' } // Using formal language for rephrasing
+        null
       );
-      
+
       return {
         content: [
           {
@@ -177,7 +165,7 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("DeepL MCP Server running on stdio");
+  console.log("DeepL MCP Server running on stdio");
 }
 
 main().catch((error) => {
