@@ -1,11 +1,16 @@
 # deepl-mcp-server
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/DeepLcom/deepl-mcp-server/blob/main/LICENSE)
+
 A Model Context Protocol (MCP) server that provides translation capabilities using the DeepL API.
 
 ## Features
 
 - Translate text between numerous languages
 - Rephrase text using DeepL's capabilities
+- Access to all DeepL API languages and features
+- Automatic language detection
+- Formality control for supported languages
 
 ## Installation
 
@@ -21,7 +26,7 @@ npm install
 
 ### DeepL API Key
 
-You'll need a DeepL API key to use this server. You can get one by signing up at [DeepL API](https://www.deepl.com/pro-api).
+You'll need a DeepL API key to use this server. You can get one by signing up at [DeepL API](https://www.deepl.com/pro-api?utm_source=github&utm_medium=github-mcp-server-readme). With a DeepL API Free account you can translate up to 500,000 characters/month for free.
 
 ## Using with Claude Desktop
 
@@ -59,10 +64,6 @@ This MCP server integrates with Claude Desktop to provide translation capabiliti
 
 Once configured, Claude will be able to use the DeepL translation tools when needed. You can ask Claude to translate text between languages, and it will use the DeepL API behind the scenes.
 
-## Debugging
-
-For debugging information, visit the [MCP debugging documentation](https://modelcontextprotocol.io/docs/tools/debugging).
-
 ## Available Tools
 
 This server provides the following tools:
@@ -71,3 +72,64 @@ This server provides the following tools:
 - `get-target-languages`: Get list of available target languages for translation
 - `translate-text`: Translate text to a target language
 - `rephrase-text`: Rephrase text in the same or different language
+
+## Tool Details
+
+### translate-text
+
+This tool translates text between languages using the DeepL API.
+
+Parameters:
+- `text`: The text to translate
+- `sourceLang`: Source language code (e.g., 'en', 'de') or null for auto-detection
+- `targetLang`: Target language code (e.g., 'en-US', 'de', 'fr')
+- `formality` (optional): Controls formality level of the translation:
+  - `'less'`: use informal language
+  - `'more'`: use formal, more polite language
+  - `'default'`: use default formality
+  - `'prefer_less'`: use informal language if available, otherwise default
+  - `'prefer_more'`: use formal language if available, otherwise default
+
+### rephrase-text
+
+This tool rephrases text in the same or different language using the DeepL API.
+
+Parameters:
+- `text`: The text to rephrase
+- `targetLang`: Target language code (e.g., 'en', 'de') or null for auto-detection
+
+## Supported Languages
+
+The DeepL API supports a wide variety of languages for translation. You can use the `get-source-languages` and `get-target-languages` tools to see all currently supported languages.
+
+Some examples of supported languages include:
+- English (en, en-US, en-GB)
+- German (de)
+- Spanish (es)
+- French (fr)
+- Italian (it)
+- Japanese (ja)
+- Chinese (zh)
+- Portuguese (pt-BR, pt-PT)
+- Russian (ru)
+- And many more
+
+## Debugging
+
+For debugging information, visit the [MCP debugging documentation](https://modelcontextprotocol.io/docs/tools/debugging).
+
+## Error Handling
+
+If you encounter errors with the DeepL API, check the following:
+- Verify your API key is correct
+- Make sure you're not exceeding your API usage limits
+- Confirm the language codes you're using are supported
+
+## License
+
+MIT
+
+## Links
+
+- [DeepL API Documentation](https://www.deepl.com/docs-api?utm_source=github&utm_medium=github-mcp-server-readme)
+- [Model Context Protocol Documentation](https://modelcontextprotocol.io/docs/)
