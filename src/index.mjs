@@ -6,6 +6,10 @@ import * as deepl from 'deepl-node';
 const DEEPL_API_KEY = process.env.DEEPL_API_KEY;
 const deeplClient = new deepl.DeepLClient(DEEPL_API_KEY);
 
+// Import WritingStyle and WritingTone enums
+const WritingStyle = deepl.WritingStyle;
+const WritingTone = deepl.WritingTone;
+
 // Cache for language lists
 let sourceLanguagesCache = null;
 let targetLanguagesCache = null;
@@ -136,16 +140,46 @@ server.tool(
 );
 
 server.tool(
+  "get-writing-styles-and-tones",
+  "Get list of available writing styles and tones for rephrasing",
+  {},
+  async () => {
+    try {
+      const writingStyles = Object.values(WritingStyle);
+      const writingTones = Object.values(WritingTone);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify({
+              writingStyles,
+              writingTones,
+            }, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      throw new Error(`Failed to get writing styles and tones: ${error.message}`);
+    }
+  }
+);
+
+server.tool(
   "rephrase-text",
-  "Rephrase text in the same or different language using DeepL API",
+  "Rephrase text in the same language using DeepL API",
   {
-    text: z.string().describe("Text to rephrase")
+    text: z.string().describe("Text to rephrase"),
+    style: z.nativeEnum(WritingStyle).optional().describe("Writing style for rephrasing"),
+    tone: z.nativeEnum(WritingTone).optional().describe("Writing tone for rephrasing")
   },
-  async ({ text }) => {
+  async ({ text, style, tone }) => {
     try {
       const result = await deeplClient.rephraseText(
         text,
-        null
+        null,
+        style,
+        tone
       );
 
       return {
@@ -165,7 +199,7 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("DeepL MCP Server running on stdio");
+  console.error("DeepL MCP Server running on stdio");
 }
 
 main().catch((error) => {
