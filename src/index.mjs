@@ -41,7 +41,7 @@ async function getTargetLanguages() {
 // Create server instance
 const server = new McpServer({
   name: "deepl",
-  version: "1.0.0",
+  version: "0.1.0-beta.0",
   capabilities: {
     resources: {},
     tools: {},
