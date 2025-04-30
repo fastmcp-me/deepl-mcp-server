@@ -36,6 +36,7 @@ This MCP server integrates with Claude Desktop to provide translation capabiliti
 
 1. Install Claude Desktop if you haven't already
 2. Create or edit the Claude Desktop configuration file:
+
    - On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - On Windows: `%AppData%\Claude\claude_desktop_config.json`
    - On Linux: `~/.config/Claude/claude_desktop_config.json`
@@ -44,17 +45,15 @@ This MCP server integrates with Claude Desktop to provide translation capabiliti
 
 ```json
 {
-    "mcpServers": {
-        "deepl": {
-            "command": "node",
-            "args": [
-                "/path/to/deepl-mcp-server/src/index.mjs"
-            ],
-            "env": {
-                "DEEPL_API_KEY": "your-api-key-here"
-            }
-        }
+  "mcpServers": {
+    "deepl": {
+      "command": "npx",
+      "args": ["-y", "deepl-mcp-server"],
+      "env": {
+        "DEEPL_API_KEY": "your-api-key-here"
+      }
     }
+  }
 }
 ```
 
@@ -80,6 +79,7 @@ This server provides the following tools:
 This tool translates text between languages using the DeepL API.
 
 Parameters:
+
 - `text`: The text to translate
 - `sourceLang`: Source language code (e.g., 'en', 'de') or null for auto-detection
 - `targetLang`: Target language code (e.g., 'en-US', 'de', 'fr')
@@ -95,6 +95,7 @@ Parameters:
 This tool rephrases text in the same or different language using the DeepL API.
 
 Parameters:
+
 - `text`: The text to rephrase
 
 ## Supported Languages
@@ -102,6 +103,7 @@ Parameters:
 The DeepL API supports a wide variety of languages for translation. You can use the `get-source-languages` and `get-target-languages` tools to see all currently supported languages.
 
 Some examples of supported languages include:
+
 - English (en, en-US, en-GB)
 - German (de)
 - Spanish (es)
@@ -120,6 +122,7 @@ For debugging information, visit the [MCP debugging documentation](https://model
 ## Error Handling
 
 If you encounter errors with the DeepL API, check the following:
+
 - Verify your API key is correct
 - Make sure you're not exceeding your API usage limits
 - Confirm the language codes you're using are supported
