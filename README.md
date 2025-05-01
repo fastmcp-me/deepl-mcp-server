@@ -82,7 +82,6 @@ This tool translates text between languages using the DeepL API.
 Parameters:
 
 - `text`: The text to translate
-- `sourceLang`: Source language code (e.g., 'en', 'de') or null for auto-detection
 - `targetLang`: Target language code (e.g., 'en-US', 'de', 'fr')
 - `formality` (optional): Controls formality level of the translation:
   - `'less'`: use informal language
