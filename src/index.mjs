@@ -47,7 +47,7 @@ async function validateLanguages(sourceLang, targetLang) {
 // Create server instance
 const server = new McpServer({
   name: "deepl",
-  version: "0.1.0-beta.0",
+  version: "0.1.1-beta.0",
   capabilities: {
     resources: {},
     tools: {},
