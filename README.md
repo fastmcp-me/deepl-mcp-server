@@ -2,6 +2,7 @@
 
 [![Version](https://img.shields.io/npm/v/deepl-mcp-server.svg)](https://www.npmjs.org/package/deepl-mcp-server)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/DeepLcom/deepl-mcp-server/blob/main/LICENSE)
+[![smithery badge](https://smithery.ai/badge/@DeepLcom/deepl-mcp-server)](https://smithery.ai/server/@DeepLcom/deepl-mcp-server)
 
 A Model Context Protocol (MCP) server that provides translation capabilities using the DeepL API.
 
@@ -14,6 +15,14 @@ A Model Context Protocol (MCP) server that provides translation capabilities usi
 - Formality control for supported languages
 
 ## Installation
+
+### Installing via Smithery
+
+To install deepl-mcp-server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@DeepLcom/deepl-mcp-server):
+
+```bash
+npx --yes @smithery/cli install @DeepLcom/deepl-mcp-server --client claude
+```
 
 Clone this repository and install dependencies:
 
