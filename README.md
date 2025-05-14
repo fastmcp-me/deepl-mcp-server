@@ -16,15 +16,12 @@ A Model Context Protocol (MCP) server that provides translation capabilities usi
 
 ## Installation
 
-### Installing via Smithery
-
-To install deepl-mcp-server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@DeepLcom/deepl-mcp-server):
-
+You can install this using npm:
 ```bash
-npx --yes @smithery/cli install @DeepLcom/deepl-mcp-server --client claude
+npm install deepl-mcp-server
 ```
 
-Clone this repository and install dependencies:
+Or you can clone this repository and install dependencies:
 
 ```bash
 git clone https://github.com/DeepLcom/deepl-mcp-server.git
