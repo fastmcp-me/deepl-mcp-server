@@ -32,7 +32,7 @@ server.tool(
   'get-consistent-joke',
   'Tell the same joke, every single time',
   async () => ({content: [{type: "text", text: consistentJoke }]})
-)
+);
 
 // Next, slightly more elaborate - a tool that calls the joke API
 server.tool(
