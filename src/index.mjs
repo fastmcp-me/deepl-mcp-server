@@ -31,13 +31,9 @@ async function getTargetLanguages() {
 }
 
 // Helper function to validate languages
-async function validateLanguages(sourceLang, targetLang) {
-  const sourceLanguages = await getSourceLanguages();
+async function validateLanguages(targetLang) {
   const targetLanguages = await getTargetLanguages();
-  
-  if (sourceLang && !sourceLanguages.some(lang => lang.code === sourceLang)) {
-    throw new Error(`Invalid source language: ${sourceLang}. Available languages: ${sourceLanguages.map(l => l.code).join(', ')}`);
-  }
+
   if (!targetLanguages.some(lang => lang.code === targetLang)) {
     throw new Error(`Invalid target language: ${targetLang}. Available languages: ${targetLanguages.map(l => l.code).join(', ')}`);
   }
@@ -47,7 +43,7 @@ async function validateLanguages(sourceLang, targetLang) {
 // Create server instance
 const server = new McpServer({
   name: "deepl",
-  version: "0.1.0-beta.0",
+  version: "0.1.3-beta.0",
   capabilities: {
     resources: {},
     tools: {},
@@ -108,19 +104,18 @@ server.tool(
   "Translate text to a target language using DeepL API",
   {
     text: z.string().describe("Text to translate"),
-    sourceLang: z.string().nullable().describe("Source language code (e.g. 'en', 'de', null for auto-detection)"),
     targetLang: z.string().describe("Target language code (e.g. 'en-US', 'de', 'fr')"),
     formality: z.enum(['less', 'more', 'default', 'prefer_less', 'prefer_more']).optional().describe("Controls whether translations should lean toward informal or formal language"),
   },
-  async ({ text, sourceLang, targetLang, formality }) => {
+  async ({ text, targetLang, formality }) => {
     // Validate languages before translation
-    await validateLanguages(sourceLang, targetLang);
+    await validateLanguages(targetLang);
 
     try {
       const result = await deeplClient.translateText(
-        text, 
-        /** @type {import('deepl-node').SourceLanguageCode} */ (sourceLang), 
-        /** @type {import('deepl-node').TargetLanguageCode} */ (targetLang), 
+        text,
+        null,
+        /** @type {import('deepl-node').TargetLanguageCode} */(targetLang),
         { formality }
       );
       return {

@@ -2,6 +2,7 @@
 
 [![Version](https://img.shields.io/npm/v/deepl-mcp-server.svg)](https://www.npmjs.org/package/deepl-mcp-server)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blueviolet.svg)](https://github.com/DeepLcom/deepl-mcp-server/blob/main/LICENSE)
+[![smithery badge](https://smithery.ai/badge/@DeepLcom/deepl-mcp-server)](https://smithery.ai/server/@DeepLcom/deepl-mcp-server)
 
 A Model Context Protocol (MCP) server that provides translation capabilities using the DeepL API.
 
@@ -15,7 +16,12 @@ A Model Context Protocol (MCP) server that provides translation capabilities usi
 
 ## Installation
 
-Clone this repository and install dependencies:
+You can install this using npm:
+```bash
+npm install deepl-mcp-server
+```
+
+Or you can clone this repository and install dependencies:
 
 ```bash
 git clone https://github.com/DeepLcom/deepl-mcp-server.git
@@ -49,7 +55,7 @@ This MCP server integrates with Claude Desktop to provide translation capabiliti
   "mcpServers": {
     "deepl": {
       "command": "npx",
-      "args": ["-y", "deepl-mcp-server"],
+      "args": ["-y", "/path/to/deepl-mcp-server"],
       "env": {
         "DEEPL_API_KEY": "your-api-key-here"
       }
@@ -58,7 +64,7 @@ This MCP server integrates with Claude Desktop to provide translation capabiliti
 }
 ```
 
-4. Replace `/path/to/deepl-mcp-server` with the actual path to your local copy of this repository
+4. Replace `/path/to/deepl-mcp-server` with an **absolute path** to your local copy of this repository - for example, `/Users/robotwoman/Code/deepl-mcp-server`
 5. Replace `your-api-key-here` with your actual DeepL API key
 6. Restart Claude Desktop
 
@@ -82,7 +88,6 @@ This tool translates text between languages using the DeepL API.
 Parameters:
 
 - `text`: The text to translate
-- `sourceLang`: Source language code (e.g., 'en', 'de') or null for auto-detection
 - `targetLang`: Target language code (e.g., 'en-US', 'de', 'fr')
 - `formality` (optional): Controls formality level of the translation:
   - `'less'`: use informal language
