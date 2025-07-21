@@ -14,14 +14,19 @@ A Model Context Protocol (MCP) server that provides translation capabilities usi
 - Automatic language detection
 - Formality control for supported languages
 
-## Installation
+## Usage
 
-You can install this using npm:
+The easiest way to run this server is to use the npm package without installing anything:
+```bash
+npx deepl-mcp-server
+```
+
+If you want to install this locally, so you can play with it to your heart's content, you can do so using npm:
 ```bash
 npm install deepl-mcp-server
 ```
 
-Or you can clone this repository and install dependencies:
+Alternately, if you want to contribute, you can clone this repository and install dependencies:
 
 ```bash
 git clone https://github.com/DeepLcom/deepl-mcp-server.git
@@ -48,24 +53,40 @@ This MCP server integrates with Claude Desktop to provide translation capabiliti
    - On Windows: `%AppData%\Claude\claude_desktop_config.json`
    - On Linux: `~/.config/Claude/claude_desktop_config.json`
 
-3. Add the DeepL MCP server configuration:
+3. Add the DeepL MCP server configuration. If you want to use the npm package without installing anything, as described above:
 
 ```json
 {
   "mcpServers": {
     "deepl": {
       "command": "npx",
-      "args": ["-y", "/path/to/deepl-mcp-server"],
+      "args": ["deepl-mcp-server"],
       "env": {
-        "DEEPL_API_KEY": "your-api-key-here"
+        "DEEPL_API_KEY": "{YOUR_API_KEY}"
       }
     }
   }
 }
 ```
 
-4. Replace `/path/to/deepl-mcp-server` with an **absolute path** to your local copy of this repository - for example, `/Users/robotwoman/Code/deepl-mcp-server`
-5. Replace `your-api-key-here` with your actual DeepL API key
+Or, if you installed this locally, give Claude an absolute path to the JS file, like this:
+
+```json
+{
+  "mcpServers": {
+    "deepl": {
+      "command": "node",
+      "args": ["/{ABSOLUTE_PATH_TO_SERVER}/deepl-mcp-server/src/index.mjs"],
+      "env": {
+        "DEEPL_API_KEY": "{YOUR_API_KEY}"
+      }
+    }
+  }
+}
+```
+
+4. Replace `{ABSOLUTE_PATH_TO_SERVER}` with an **absolute path** to your local copy of this repository - for example, `/Users/robotwoman/Code/deepl-mcp-server`
+5. Replace `{YOUR_API_KEY}` with your actual DeepL API key
 6. Restart Claude Desktop
 
 Once configured, Claude will be able to use the DeepL translation tools when needed. You can ask Claude to translate text between languages, and it will use the DeepL API behind the scenes.
