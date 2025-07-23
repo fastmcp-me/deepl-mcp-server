@@ -193,6 +193,59 @@ server.tool(
   }
 );
 
+server.tool(
+  "translate-document",
+  "Translate a document file using DeepL API",
+  {
+    inputFile: z.string().describe("Path to the input document file to translate"),
+    outputFile: z.string().optional().describe("Path where the translated document will be saved (if not provided, will be auto-generated)"),
+    targetLang: z.string().describe("Target language code (e.g. 'en-US', 'de', 'fr')"),
+    sourceLang: z.string().optional().describe("Source language code, or leave empty for auto-detection"),
+    formality: z.enum(['less', 'more', 'default', 'prefer_less', 'prefer_more']).optional().describe("Controls whether translations should lean toward informal or formal language"),
+  },
+  async ({ inputFile, outputFile, targetLang, sourceLang, formality }) => {
+    // Validate target language
+    await validateLanguages(targetLang);
+
+    // Generate output file name if not provided
+    if (!outputFile) {
+      const path = await import('path');
+      const parsed = path.parse(inputFile);
+      const targetLangCode = targetLang.split('-')[0]; // Get language code without region (e.g., 'en' from 'en-US')
+      outputFile = path.join(parsed.dir, `${parsed.name}_${targetLangCode}${parsed.ext}`);
+    }
+
+    try {
+      const result = await deeplClient.translateDocument(
+        inputFile,
+        outputFile,
+        sourceLang ? /** @type {import('deepl-node').SourceLanguageCode} */(sourceLang) : null,
+        /** @type {import('deepl-node').TargetLanguageCode} */(targetLang),
+        { formality }
+      );
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Document translated successfully! Status: ${result.status}`,
+          },
+          {
+            type: "text",
+            text: `Characters billed: ${result.billedCharacters}`,
+          },
+          {
+            type: "text",
+            text: `Output file: ${outputFile}`,
+          },
+        ],
+      };
+    } catch (error) {
+      throw new Error(`Document translation failed: ${error.message}`);
+    }
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
