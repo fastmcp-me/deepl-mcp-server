@@ -85,6 +85,8 @@ Or, if you installed this locally, give Claude an absolute path to the JS file, 
 }
 ```
 
+If you've pulled down this code, but you haven't done an `npm install`, you can use `npx -y` here instead of `node`.
+
 4. Replace `{ABSOLUTE_PATH_TO_SERVER}` with an **absolute path** to your local copy of this repository - for example, `/Users/robotwoman/Code/deepl-mcp-server`
 5. Replace `{YOUR_API_KEY}` with your actual DeepL API key
 6. Restart Claude Desktop
