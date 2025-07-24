@@ -85,7 +85,7 @@ Or, if you installed this locally, give Claude an absolute path to the JS file, 
 }
 ```
 
-If you've pulled down this code, but you haven't done an `npm install`, you can use `npx -y` here instead of `node`.
+If you've pulled down this code, but you haven't done an `npm install`, or if you just prefer to, you can use `npx /{ABSOLUTE_PATH_TO_SERVER}/deepl-mcp-server` here instead of `node /{ABSOLUTE_PATH_TO_SERVER}/deepl-mcp-server/src/index.mjs`.
 
 4. Replace `{ABSOLUTE_PATH_TO_SERVER}` with an **absolute path** to your local copy of this repository - for example, `/Users/robotwoman/Code/deepl-mcp-server`
 5. Replace `{YOUR_API_KEY}` with your actual DeepL API key
