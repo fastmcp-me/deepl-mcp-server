@@ -6,7 +6,8 @@ import { z } from "zod";
 import * as deepl from 'deepl-node';
 
 const DEEPL_API_KEY = process.env.DEEPL_API_KEY;
-const deeplClient = new deepl.DeepLClient(DEEPL_API_KEY);
+const options = {appInfo: { appName: 'DeepL-MCP', appVersion: '0.1.3-beta.0' },};
+const deeplClient = new deepl.DeepLClient(DEEPL_API_KEY, options);
 
 // Import WritingStyle and WritingTone enums
 const WritingStyle = deepl.WritingStyle;
